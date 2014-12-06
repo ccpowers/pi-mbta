@@ -1,5 +1,7 @@
 """ Main file to run MBTA Nixie Tube clock """
 from MBTAQuery import MBTAQuery
+from MBTAStop import MBTAStop
+import time
 
 if __name__ == "__main__":
     import yaml
@@ -7,13 +9,9 @@ if __name__ == "__main__":
         keys = yaml.load(f)
 
     api_key = keys['mbta']
-    query = 'predictionsbystop'
-    parameters = {'format': 'json',
-                  'stop' : '2670'}
 
-    mbtaquery = MBTAQuery(api_key, query, parameters)
-    response = mbtaquery.send()
-    print response
-
-    requests_per_day = 10000
-    request_frequency = 1/10
+    stop = MBTAStop(2670, api_key)
+    while True:
+        time.sleep(15)
+        stop.fetch_predictions()
+        print stop
